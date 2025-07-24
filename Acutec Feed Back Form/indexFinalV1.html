@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Product Feedback Survey (V1-Style Left Panel with Hover Updates)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-image: url('faded_gallery-OfdOEdGYiuk-unsplash.jpg'); 
+            background-size: 200%, 200%;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            animation: gradientBG 15s ease infinite;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 20px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            z-index: 0;
+        }
+
+        /* Left Side Description Panel */
+        .description-panel {
+            width: 35%;
+            background: rgba(24, 22, 22, 0.716);
+            padding: 30px 25px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            max-height: calc(100vh - 60px);
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.4) rgba(24, 22, 22, 0.716);
+        }
+        
+        .description-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .description-panel::-webkit-scrollbar-track {
+            background: rgba(24, 22, 22, 0.716);
+        }
+
+        .description-panel::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 4px;
+        }
+
+        .description-panel::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .description-panel h1 {
+            color: white;
+            font-weight: 600;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+        
+        .description-panel .logo {
+            width: 130px;
+            margin: 0 auto 12px;
+            align-self: center;
+            filter: drop-shadow(0 2px 10px rgba(0, 242, 254, 0.3));
+        }
+        
+        .description-panel p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        
+        .description-panel .features {
+            margin-top: 15px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .feature-icon {
+            color: #00f2fe;
+            font-size: 1.2rem;
+            margin-top: 3px;
+            min-width: 20px;
+        }
+        
+        .feature-text h3 {
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+        
+        .feature-text p {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 0.85rem;
+            margin-bottom: 0;
+        }
+
+        /* Product List in Left Panel */
+        .product-list {
+            margin-top: 20px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 1;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .product-list.hidden {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        
+        .product-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .gradient-border {
+            animation: gradientBorder 3s linear infinite;
+        }
+        
+        @keyframes gradientBorder {
+            0% { border-color: #4facfe; }
+            50% { border-color: #00f2fe; }
+            100% { border-color: #4facfe; }
+        }
+        
+        .product-item h3 {
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        
+        .product-item p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        /* Product Description in Left Panel (on hover) */
+        .product-description {
+            margin-top: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 1;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .product-description.hidden {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        
+        .product-description .product-item {
+            max-width: 280px;
+            max-height: calc(100% - 120px);
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        }
+        
+        .product-description .product-item::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .product-description .product-item::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .product-description .product-item::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+        
+        .product-description .product-item::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .product-description .product-item h3 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+        
+        .product-description .product-item p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        /* Right Side Form Panel */
+        .form-panel {
+            width: 65%;
+            padding: 30px 25px 30px 30px;
+            display: flex;
+            flex-direction: column;
+            max-height: calc(100vh - 40px);
+        }
+        
+        .progress-container {
+            padding: 20px 0 15px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .progress-steps {
+            display: flex;
+            gap: 40px;
+            position: relative;
+        }
+        
+        .progress-steps::before {
+            content: "";
+            position: absolute;
+            top: 18px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.15);
+            z-index: 1;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            top: 18px;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            z-index: 2;
+            transition: width 0.4s ease;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 3;
+        }
+        
+        .step-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #ddd;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .step.active .step-icon {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4);
+            transform: scale(1.1);
+            border-radius: 50%;
+        }
+        
+        .step.completed .step-icon {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            border-color: transparent;
+            color: white;
+            border-radius: 50%;
+        }
+        
+        .step-label {
+            font-size: 0.9rem;
+            color: #ddd;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .step.active .step-label {
+            color: #fff;
+            font-weight: 600;
+        }
+        
+        .form-container {
+            padding: 20px 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+            transform: translateZ(0);
+            -webkit-overflow-scrolling: touch;
+            will-change: transform;
+        }
+
+        .form-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .form-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .form-container::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        .form-container::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .form-step {
+            display: none;
+            animation: fadeIn 0.5s ease;
+            flex: 1;
+        }
+
+        .form-step[data-step-type="product-selection"] {
+            overflow: visible !important;
+            display: flex;
+            flex-direction: column;
+            height: auto;
+        }
+        .form-step[data-step-type="product-selection"]::-webkit-scrollbar {
+            display: none;
+            width: 0;
+        }
+        
+        .form-step.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-step:not(.active) {
+            display: none !important;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-weight: 500;
+            font-size: 1.7rem;
+            text-align: center;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .form-description {
+            color: rgba(255, 255, 255, 0.85);
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            font-size: 1.05rem;
+        }
+        
+        .required-field::after {
+            content: " *";
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        
+        input[type="text"], 
+        textarea {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+        
+        input[type="text"]::placeholder, 
+        textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        input[type="text"]:focus, 
+        textarea:focus {
+            outline: none;
+            border-color: #00f2fe;
+            box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.2);
+            background: rgba(255, 255, 255, 0.12);
+        }
+        
+        .auto-filled {
+            background-color: rgba(0, 242, 254, 0.15);
+            border-color: #00f2fe;
+            color: #ffffff;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+            margin: 20px 0 30px;
+            padding: 10px;
+        }
+        
+        .product-card {
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 20px 15px;
+            margin: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 1;
+            transform: translateZ(0);
+            will-change: transform, box-shadow;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .product-card.selected {
+            background: rgba(0, 98, 126, 0.3);
+            border-color: #00f2fe;
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.4);
+            z-index: 5;
+        }
+        
+        .product-icon {
+            font-size: 2.8rem;
+            color: #00f2fe;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 242, 254, 0.4);
+        }
+        
+        .product-card.selected .product-icon {
+            color: #ffffff;
+        }
+        
+        .product-card h3 {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .rating-section {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .rating-section h3 {
+            color: white;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .rating-section h3 i {
+            color: #00f2fe;
+            font-size: 1.8rem;
+        }
+        
+        .rating-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            gap: 20px;
+        }
+        
+        .rating-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .rating-stars {
+            display: flex;
+            gap: 3px;
+            margin-bottom: 8px;
+        }
+        
+        .rating-stars i {
+            color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.4rem;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .rating-stars i:hover {
+            transform: scale(1.2);
+        }
+        
+        .rating-stars i.active {
+            color: #ffd700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+        }
+        
+        .rating-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .feedback-section {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .feedback-section h3 {
+            color: white;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .feedback-section h3 i {
+            color: #00f2fe;
+            font-size: 1.8rem;
+        }
+        
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn {
+            padding: 14px 32px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1.05rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-prev {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-prev:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+        
+        .btn-next, .btn-submit {
+            background: linear-gradient(to right, #00617e, #0088a9);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 98, 126, 0.4);
+        }
+        
+        .btn-next:hover, .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 98, 126, 0.6);
+        }
+        
+        .btn:disabled {
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.3);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .thank-you {
+            text-align: center;
+            padding: 50px 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .thank-you i {
+            font-size: 5rem;
+            color: #4CAF50;
+            margin-bottom: 25px;
+            text-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .thank-you h2 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+        }
+        
+        .thank-you p {
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.7;
+            max-width: 550px;
+            margin: 0 auto 35px;
+            font-size: 1.1rem;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .loading-content {
+            background: rgba(30, 30, 40, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            border: 1px solid rgba(0, 242, 254, 0.3);
+        }
+        
+        .loading-spinner {
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-top: 5px solid #00f2fe;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 25px;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+        }
+        
+        .loading-text {
+            font-size: 1.3rem;
+            color: white;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .loading-subtext {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background: rgba(120, 0, 0, 0.3);
+            color: #ff9e9e;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 100, 100, 0.3);
+        }
+        
+        .error-field {
+            border: 1px solid #ff6b6b !important;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2) !important;
+        }
+        
+        .error-message ul {
+            margin: 10px 0 10px 20px;
+        }
+        
+        .error-message li {
+            text-align: left;
+            margin-bottom: 5px;
+        }
+        
+        .validation-hint {
+            background: rgba(0, 98, 126, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            border-left: 4px solid #00f2fe;
+        }
+        
+        /* Modal Styles (for confirmation only) */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: rgba(30, 30, 40, 0.9);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        
+        .modal-buttons button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        #modal-confirm {
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: white;
+        }
+        
+        #modal-proceed {
+            background: linear-gradient(to right, #ff6b6b, #ff9e9e);
+            color: white;
+        }
+        
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                max-width: 600px;
+            }
+            
+            .description-panel, .form-panel {
+                width: 100%;
+            }
+            
+            .description-panel {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 20px;
+                max-height: 300px;
+            }
+            
+            .form-panel {
+                padding: 20px;
+            }
+            
+            .product-description .product-item {
+                max-height: calc(100% - 120px);
+            }
+            
+            .product-item {
+                border-width: 2px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .progress-steps {
+                gap: 20px;
+            }
+            
+            .step-label {
+                font-size: 0.75rem;
+            }
+            
+            .rating-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .rating-item {
+                padding: 10px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .description-panel .logo {
+                width: 90px;
+                margin-bottom: 12px;
+            }
+            
+            .product-item {
+                border-width: 2px;
+            }
+            
+            .product-item h3 {
+                font-size: 1rem;
+            }
+            
+            .product-item p {
+                font-size: 0.85rem;
+            }
+            
+            .product-description .product-item h3 {
+                font-size: 1.1rem;
+            }
+            
+            .product-description .product-item p {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+            
+            .product-description .product-item {
+                padding: 15px;
+                max-height: calc(100% - 120px);
+            }
+            
+            .feature-item {
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+            
+            .feature-icon {
+                font-size: 1rem;
+            }
+            
+            .feature-text h3 {
+                font-size: 0.9rem;
+            }
+            
+            .feature-text p {
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .description-panel {
+                display: none; /* Hide left panel on phones */
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+            
+            .form-panel {
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .description-panel .logo {
+                width: 80px;
+            }
+            
+            .product-item {
+                border-width: 1px;
+            }
+            
+            .product-item h3 {
+                font-size: 0.9rem;
+            }
+            
+            .product-item p {
+                font-size: 0.8rem;
+            }
+            
+            .product-description .product-item h3 {
+                font-size: 1rem;
+            }
+            
+            .product-description .product-item p {
+                font-size: 0.85rem;
+            }
+            
+            .product-description .product-item {
+                padding: 12px;
+            }
+            
+            .form-container {
+                max-height: calc(100vh - 120px);
+            }
+            
+            .btn {
+                padding: 12px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="container">
+        <!-- Left Panel: Description -->
+        <div class="description-panel" id="description-panel">
+            <img src="Acutec_new logo.png" class="logo" alt="">
+            <h1>Product Feedback Survey</h1>
+            <p>Your insights help us improve our products and services. Please take a few minutes to share your experience.</p>
+            
+            <div class="features">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="feature-text">
+                        <h3>Secure & Confidential</h3>
+                        <p>Your feedback is completely anonymous and secure.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="feature-text">
+                        <h3>Quick & Easy</h3>
+                        <p>Complete the survey in just a few minutes.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="feature-text">
+                        <h3>Shape Our Future</h3>
+                        <p>Your suggestions directly influence our development roadmap.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Panel: Form Content -->
+        <div class="form-panel">
+            <div class="modal" id="confirmation-modal" style="display: none;">
+                <div class="modal-content">
+                    <h3 id="modal-title">Just a Moment</h3>
+                    <p id="modal-message"></p>
+                    <div class="modal-buttons">
+                        <button id="modal-confirm">Yes, I'll provide feedback</button>
+                        <button id="modal-proceed">Proceed anyway</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-steps">
+                    <div class="progress-bar" id="progress-bar"></div>
+                    <div class="step active" id="step-1">
+                        <div class="step-icon">1</div>
+                        <span class="step-label">Organization</span>
+                    </div>
+                    <div class="step" id="step-2">
+                        <div class="step-icon">2</div>
+                        <span class="step-label">Products</span>
+                    </div>
+                    <div class="step" id="step-3">
+                        <div class="step-icon">3</div>
+                        <span class="step-label">Ratings</span>
+                    </div>
+                    <div class="step" id="step-4">
+                        <div class="step-icon">4</div>
+                        <span class="step-label">Feedback</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-container">
+                <!-- Step 1: Organization Info -->
+                <div class="form-step active" id="form-step-1">
+                    <h2>Organization Information</h2>
+                    <p class="form-description">Tell us about your organization to help us understand your needs</p>
+                    
+                    <div class="form-group">
+                        <label for="org-name" class="required-field">Organization Name</label>
+                        <input type="text" id="org-name" placeholder="Enter your organization name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="industry" class="required-field">Industry</label>
+                        <input type="text" id="industry" placeholder="What industry is your organization in?">
+                    </div>
+                    
+                    <div class="button-group">
+                        <div></div>
+                        <button class="btn btn-next" id="next-to-products" disabled>
+                            <span>Next</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Product Selection -->
+                <div class="form-step" id="form-step-2" data-step-type="product-selection">
+                    <h2>Which products are you using?</h2>
+                    <p class="form-description">Select all that apply to your organization</p>
+                    
+                    <div class="products-grid">
+                        <div class="product-card" data-product="rfms">
+                            <div class="product-icon">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <h3>RFMS</h3>
+                        </div>
+                        
+                        <div class="product-card" data-product="rfms-nach">
+                            <div class="product-icon">
+                                <i class="fas fa-money-check-alt"></i>
+                            </div>
+                            <h3>RFMS NACH</h3>
+                        </div>
+                        
+                        <div class="product-card" data-product="signing-tool">
+                            <div class="product-icon">
+                                <i class="fas fa-file-signature"></i>
+                            </div>
+                            <h3>SIGNING TOOL</h3>
+                        </div>
+                        
+                        <div class="product-card" data-product="vam">
+                            <div class="product-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <h3>VAM</h3>
+                        </div>
+                        
+                        <div class="product-card" data-product="support-services">
+                            <div class="product-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <h3>SUPPORT SERVICES</h3>
+                        </div>
+                        
+                        <div class="product-card" data-product="converter-tool">
+                            <div class="product-icon">
+                                <i class="fas fa-file-export"></i>
+                            </div>
+                            <h3>CONVERTER TOOL</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn btn-prev" id="prev-to-org">
+                            <i class="fas fa-arrow-left"></i>
+                            <span>Previous</span>
+                        </button>
+                        <button class="btn btn-next" id="next-to-ratings" disabled>
+                            <span>Next</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Product Ratings -->
+                <div class="form-step" id="form-step-3">
+                    <h2>Rate your experience</h2>
+                    <p class="form-description">Please rate each selected product on the following aspects. Your ratings help us improve our products.</p>
+                    
+                    <div id="rating-sections"></div>
+                    
+                    <div class="button-group">
+                        <button class="btn btn-prev" id="prev-to-products">
+                            <i class="fas fa-arrow-left"></i>
+                            <span>Previous</span>
+                        </button>
+                        <button class="btn btn-next" id="next-to-feedback" disabled>
+                            <span>Next</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 4: Detailed Feedback -->
+                <div class="form-step" id="form-step-4">
+                    <h2>Share your detailed feedback</h2>
+                    <p class="form-description">Please provide your thoughts on each selected product</p>
+                    
+                    <div class="validation-hint">
+                        <i class="fas fa-info-circle"></i> We would greatly appreciate your detailed feedback on each product you selected.
+                    </div>
+                    
+                    <div id="feedback-sections"></div>
+                    
+                    <div class="button-group">
+                        <button class="btn btn-prev" id="prev-to-ratings">
+                            <i class="fas fa-arrow-left"></i>
+                            <span>Previous</span>
+                        </button>
+                        <button class="btn btn-submit" id="submit-feedback">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>Submit Feedback</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Thank You Message -->
+                <div class="form-step" id="thank-you">
+                    <div class="thank-you">
+                        <i class="fas fa-check-circle"></i>
+                        <h2>Thank You for Your Feedback!</h2>
+                        <p>Your insights are invaluable in helping us improve our products and services. We appreciate you taking the time to share your experience with us.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Submitting your feedback</div>
+            <div class="loading-subtext">Please wait while we save your responses</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-populate organization name from URL parameter
+            function autoPopulateOrgName() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const orgName = urlParams.get('org');
+                
+                if (orgName) {
+                    const decodedOrgName = decodeURIComponent(orgName.replace(/\+/g, ' '));
+                    orgNameInput.value = decodedOrgName;
+                    orgNameInput.classList.add('auto-filled');
+                    
+                    setTimeout(() => {
+                        industryInput.focus();
+                    }, 300);
+                }
+                checkFormValidity();
+            }
+            
+            // DOM Elements
+            const steps = document.querySelectorAll('.step');
+            const formSteps = document.querySelectorAll('.form-step');
+            const progressBar = document.getElementById('progress-bar');
+            const nextToProductsBtn = document.getElementById('next-to-products');
+            const nextToRatingsBtn = document.getElementById('next-to-ratings');
+            const nextToFeedbackBtn = document.getElementById('next-to-feedback');
+            const prevToOrgBtn = document.getElementById('prev-to-org');
+            const prevToProductsBtn = document.getElementById('prev-to-products');
+            const prevToRatingsBtn = document.getElementById('prev-to-ratings');
+            const submitBtn = document.getElementById('submit-feedback');
+            const productCards = document.querySelectorAll('.product-card');
+            const ratingSections = document.getElementById('rating-sections');
+            const feedbackSections = document.getElementById('feedback-sections');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const descriptionPanel = document.getElementById('description-panel');
+            const orgNameInput = document.getElementById('org-name');
+            const industryInput = document.getElementById('industry');
+            
+            autoPopulateOrgName();
+            
+            // Form State
+            let currentStep = 1;
+            const selectedProducts = new Set();
+            let ratingsData = {};
+            let currentHover = null;
+            let timeoutRef = null;
+
+            // Product data with descriptions
+            const productData = {
+                'rfms': {
+                    title: 'RFMS',
+                    brief: 'Streamline your financial transactions.',
+                    details: 'RFMS (Real-Time Financial Management System) offers seamless integration for real-time transaction processing, ensuring efficiency and accuracy in financial operations.'
+                },
+                'rfms-nach': {
+                    title: 'RFMS NACH',
+                    brief: 'Automate recurring payments.',
+                    details: 'RFMS NACH enables automated clearing house services, simplifying recurring payments and direct debits with high reliability and security.'
+                },
+                'signing-tool': {
+                    title: 'SIGNING TOOL',
+                    brief: 'Securely sign documents.',
+                    details: 'The Signing Tool provides a robust platform for digital signatures, ensuring secure and legally binding document signing processes.'
+                },
+                'vam': {
+                    title: 'VAM',
+                    brief: 'Manage virtual accounts.',
+                    details: 'VAM (Virtual Account Management) allows businesses to create and manage virtual accounts, streamlining payment collection and reconciliation.'
+                },
+                'support-services': {
+                    title: 'SUPPORT SERVICES',
+                    brief: 'Expert support for SFMS/CCIL/CIMS.',
+                    details: 'Our Support Services provide dedicated assistance for SFMS, CCIL, and CIMS, ensuring smooth operations and quick resolution of issues.'
+                },
+                'converter-tool': {
+                    title: 'CONVERTER TOOL',
+                    brief: 'Convert files effortlessly.',
+                    details: 'The Converter Tool offers flexible file conversion capabilities, supporting various formats to meet your business needs.'
+                }
+            };
+            
+            // Progress bar width update
+            function updateProgress() {
+                let progressWidth = ((currentStep - 1) / (steps.length - 1)) * 100;
+                if (currentStep === 2) {
+                    progressWidth = 36; // Force exact 36% for Step 2
+                }
+                progressBar.style.width = `${progressWidth}%`;
+                
+                steps.forEach((step, index) => {
+                    if (index < currentStep) {
+                        step.classList.add('completed');
+                        step.classList.remove('active');
+                    } else if (index === currentStep - 1) {
+                        step.classList.add('active');
+                        step.classList.remove('completed');
+                    } else {
+                        step.classList.remove('active', 'completed');
+                    }
+                });
+            }
+
+            // Generate product list HTML
+            function generateProductList() {
+                let productListHtml = '<div class="product-list" id="product-list">';
+                Object.keys(productData).forEach(product => {
+                    productListHtml += `
+                        <div class="product-item gradient-border">
+                            <h3>${productData[product].title}</h3>
+                            <p>${productData[product].brief}</p>
+                        </div>
+                    `;
+                });
+                productListHtml += '</div>';
+                return productListHtml;
+            }
+
+            // Show product description on hover or tap
+            function showProductDescription(product) {
+                if (currentStep !== 2) return;
+                currentHover = product;
+                clearTimeout(timeoutRef);
+
+                const productList = document.getElementById('product-list');
+                const productDescription = document.getElementById('product-description');
+
+                if (productDescription && currentHover === product) {
+                    productDescription.classList.remove('hidden');
+                    productDescription.querySelector('.product-item').innerHTML = `
+                        <h3>${productData[product].title}</h3>
+                        <p>${productData[product].details}</p>
+                    `;
+                    return;
+                }
+
+                if (productList) {
+                    productList.classList.add('hidden');
+                    timeoutRef = setTimeout(() => {
+                        if (currentHover === product) {
+                            productList.outerHTML = `
+                                <div class="product-description" id="product-description">
+                                    <div class="product-item gradient-border">
+                                        <h3>${productData[product].title}</h3>
+                                        <p>${productData[product].details}</p>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }, 300);
+                }
+            }
+
+            // Reset to product list
+            function resetProductDescription() {
+                if (currentStep !== 2) return;
+                currentHover = null;
+                clearTimeout(timeoutRef);
+
+                const productDescription = document.getElementById('product-description');
+                if (productDescription) {
+                    productDescription.classList.add('hidden');
+                    timeoutRef = setTimeout(() => {
+                        if (!currentHover) {
+                            productDescription.outerHTML = generateProductList();
+                        }
+                    }, 300);
+                }
+            }
+
+            // Update left panel content
+            function updateLeftPanel() {
+                if (currentStep === 2) {
+                    descriptionPanel.innerHTML = `
+                        <img src="Acutec_new logo.png" class="logo" alt="">
+                        <h1>Explore Our Products</h1>
+                        <p>Hover or tap a product to learn more.</p>
+                        ${generateProductList()}
+                    `;
+                } else {
+                    descriptionPanel.innerHTML = `
+                        <img src="Acutec_new logo.png" class="logo" alt="">
+                        <h1>Product Feedback Survey</h1>
+                        <p>Your insights help us improve our products and services. Please take a few minutes to share your experience.</p>
+                        <div class="features">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="feature-text">
+                                    <h3>Secure & Confidential</h3>
+                                    <p>Your feedback is completely anonymous and secure.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="feature-text">
+                                    <h3>Quick & Easy</h3>
+                                    <p>Complete the survey in just a few minutes.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <div class="feature-text">
+                                    <h3>Shape Our Future</h3>
+                                    <p>Your suggestions directly influence our development roadmap.</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Navigation functions
+            function goToStep(step) {
+                formSteps.forEach(formStep => formStep.classList.remove('active'));
+                document.getElementById(`form-step-${step}`).classList.add('active');
+                currentStep = step;
+                updateProgress();
+                updateLeftPanel();
+                
+                const formContainer = document.querySelector('.form-container');
+                formContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            
+            // Product selection and interaction events
+            productCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const product = this.getAttribute('data-product');
+                    
+                    if (selectedProducts.has(product)) {
+                        selectedProducts.delete(product);
+                        this.classList.remove('selected');
+                    } else {
+                        selectedProducts.add(product);
+                        this.classList.add('selected');
+                        this.style.animation = "none";
+                        setTimeout(() => {
+                            this.style.animation = "pulse 0.5s";
+                        }, 10);
+                    }
+                    
+                    nextToRatingsBtn.disabled = selectedProducts.size === 0;
+                });
+
+                // Desktop: hover events
+                card.addEventListener('mouseenter', function() {
+                    if (currentStep === 2) {
+                        const product = this.getAttribute('data-product');
+                        showProductDescription(product);
+                    }
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    if (currentStep === 2) {
+                        resetProductDescription();
+                    }
+                });
+
+                // Mobile: touch events
+                card.addEventListener('touchstart', function(e) {
+                    if (currentStep === 2) {
+                        e.preventDefault();
+                        const product = this.getAttribute('data-product');
+                        showProductDescription(product);
+                    }
+                });
+
+                card.addEventListener('touchend', function() {
+                    if (currentStep === 2) {
+                        setTimeout(() => {
+                            resetProductDescription();
+                        }, 2000);
+                    }
+                });
+            });
+            
+            // Product data
+            const productTitles = {
+                'rfms': 'RFMS',
+                'rfms-nach': 'RFMS NACH',
+                'signing-tool': 'SIGNING TOOL',
+                'vam': 'VAM (Virtual Account Management)',
+                'support-services': 'SUPPORT SERVICES (SFMS/CCIL/CIMS)',
+                'converter-tool': 'CONVERTER TOOL'
+            };
+            
+            const productIcons = {
+                'rfms': 'exchange-alt',
+                'rfms-nach': 'money-check-alt',
+                'signing-tool': 'file-signature',
+                'vam': 'wallet',
+                'support-services': 'headset',
+                'converter-tool': 'file-export'
+            };
+            
+            // Generate rating sections
+            function generateRatingSections() {
+                ratingSections.innerHTML = '';
+                
+                selectedProducts.forEach(product => {
+                    const section = document.createElement('div');
+                    section.className = 'rating-section';
+                    
+                    section.innerHTML = `
+                        <h3>
+                            <i class="fas fa-${productIcons[product]}"></i>
+                            ${productTitles[product]}
+                        </h3>
+                        
+                        <div class="rating-container">
+                            <div class="rating-item">
+                                <div class="rating-stars" data-rating="${product}-ease-of-use">
+                                    <i class="fas fa-star" data-value="1"></i>
+                                    <i class="fas fa-star" data-value="2"></i>
+                                    <i class="fas fa-star" data-value="3"></i>
+                                    <i class="fas fa-star" data-value="4"></i>
+                                    <i class="fas fa-star" data-value="5"></i>
+                                </div>
+                                <div class="rating-label">Ease of Use</div>
+                            </div>
+                            
+                            <div class="rating-item">
+                                <div class="rating-stars" data-rating="${product}-features">
+                                    <i class="fas fa-star" data-value="1"></i>
+                                    <i class="fas fa-star" data-value="2"></i>
+                                    <i class="fas fa-star" data-value="3"></i>
+                                    <i class="fas fa-star" data-value="4"></i>
+                                    <i class="fas fa-star" data-value="5"></i>
+                                </div>
+                                <div class="rating-label">Features</div>
+                            </div>
+                            
+                            <div class="rating-item">
+                                <div class="rating-stars" data-rating="${product}-reliability">
+                                    <i class="fas fa-star" data-value="1"></i>
+                                    <i class="fas fa-star" data-value="2"></i>
+                                    <i class="fas fa-star" data-value="3"></i>
+                                    <i class="fas fa-star" data-value="4"></i>
+                                    <i class="fas fa-star" data-value="5"></i>
+                                </div>
+                                <div class="rating-label">Reliability</div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    ratingSections.appendChild(section);
+                });
+                
+                initStarRatings();
+                updateNextButtonState();
+            }
+            
+            // Generate feedback sections
+            function generateFeedbackSections() {
+                feedbackSections.innerHTML = '';
+                
+                selectedProducts.forEach(product => {
+                    const section = document.createElement('div');
+                    section.className = 'feedback-section';
+                    
+                    section.innerHTML = `
+                        <h3>
+                            <i class="fas fa-${productIcons[product]}"></i>
+                            ${productTitles[product]}
+                        </h3>
+                        
+                        <div class="form-group">
+                            <label>What do you like most about this product?</label>
+                            <textarea placeholder="Share what you love about this product" rows="3" data-product="${product}-likes"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>What can be improved in this product?</label>
+                            <textarea placeholder="Suggestions for improvement" rows="3" data-product="${product}-improvements"></textarea>
+                        </div>
+                    `;
+                    
+                    feedbackSections.appendChild(section);
+                });
+            }
+            
+            // Initialize star ratings
+            function initStarRatings() {
+                const allStars = document.querySelectorAll('.rating-stars i');
+                
+                allStars.forEach(star => {
+                    star.addEventListener('click', function() {
+                        const ratingType = this.parentElement.getAttribute('data-rating');
+                        const value = parseInt(this.getAttribute('data-value'));
+                        const stars = this.parentElement.querySelectorAll('i');
+                        
+                        stars.forEach(s => s.classList.remove('active'));
+                        for (let i = 0; i < value; i++) {
+                            stars[i].classList.add('active');
+                        }
+                        
+                        ratingsData[ratingType] = value;
+                        updateNextButtonState();
+                    });
+                });
+            }
+            
+            // Get rating value
+            function getRatingValue(product, ratingType) {
+                const key = `${product}-${ratingType}`;
+                if (ratingsData[key]) {
+                    return ratingsData[key];
+                }
+                
+                const ratingElement = document.querySelector(`[data-rating="${key}"]`);
+                if (ratingElement) {
+                    const activeStars = ratingElement.querySelectorAll('.active');
+                    return activeStars.length || 0;
+                }
+                return 0;
+            }
+            
+            // Validate ratings
+            function validateRatings() {
+                let allRatingsProvided = true;
+                
+                selectedProducts.forEach(product => {
+                    const ratingTypes = ['ease-of-use', 'features', 'reliability'];
+                    ratingTypes.forEach(type => {
+                        const rating = getRatingValue(product, type);
+                        if (rating === 0) {
+                            allRatingsProvided = false;
+                        }
+                    });
+                });
+                
+                return allRatingsProvided;
+            }
+            
+            // Update Next button state
+            function updateNextButtonState() {
+                nextToFeedbackBtn.disabled = !validateRatings();
+            }
+            
+            // Validate feedback
+            function validateFeedback() {
+                let allFeedbackProvided = true;
+                
+                selectedProducts.forEach(product => {
+                    const likesTextarea = document.querySelector(`textarea[data-product="${product}-likes"]`);
+                    const improvementsTextarea = document.querySelector(`textarea[data-product="${product}-improvements"]`);
+                    
+                    if (!likesTextarea.value.trim() || !improvementsTextarea.value.trim()) {
+                        allFeedbackProvided = false;
+                    }
+                });
+                
+                return allFeedbackProvided;
+            }
+            
+            // Collect form data
+            function collectFormData() {
+                const formData = {
+                    timestamp: new Date().toISOString(),
+                    organization: document.getElementById('org-name').value.trim(),
+                    industry: document.getElementById('industry').value.trim(),
+                    products: Array.from(selectedProducts),
+                    feedback: {}
+                };
+                
+                selectedProducts.forEach(product => {
+                    const likesTextarea = document.querySelector(`textarea[data-product="${product}-likes"]`);
+                    const improvementsTextarea = document.querySelector(`textarea[data-product="${product}-improvements"]`);
+                    
+                    formData.feedback[product] = {
+                        easeOfUse: getRatingValue(product, 'ease-of-use'),
+                        features: getRatingValue(product, 'features'),
+                        reliability: getRatingValue(product, 'reliability'),
+                        likes: likesTextarea ? likesTextarea.value.trim() : '',
+                        improvements: improvementsTextarea ? improvementsTextarea.value.trim() : ''
+                    };
+                });
+                
+                return formData;
+            }
+            
+            // Show error message
+            function showError(message) {
+                const errorHtml = `
+                    <div class="error-message">${message}</div>
+                    <button class="btn btn-prev" id="retry-submission">Try Again</button>
+                    <button class="btn btn-next" id="back-to-form" style="margin-left: 10px;">Back to Form</button>
+                `;
+                
+                const formStep4 = document.getElementById('form-step-4');
+                const existingError = formStep4.querySelector('.error-message');
+                if (existingError) {
+                    existingError.remove();
+                }
+                
+                const errorContainer = document.createElement('div');
+                errorContainer.innerHTML = errorHtml;
+                formStep4.insertBefore(errorContainer, formStep4.firstChild);
+                
+                const retryBtn = document.getElementById('retry-submission');
+                const backBtn = document.getElementById('back-to-form');
+                
+                if (retryBtn) {
+                    retryBtn.addEventListener('click', () => {
+                        const formData = collectFormData();
+                        saveToGoogleSheets(formData);
+                    });
+                }
+                
+                if (backBtn) {
+                    backBtn.addEventListener('click', () => {
+                        loadingOverlay.classList.remove('active');
+                        submitBtn.disabled = false;
+                    });
+                }
+            }
+            
+            // Save data to Google Sheets (simulated)
+            function saveToGoogleSheets(formData) {
+    loadingOverlay.classList.add('active');
+    submitBtn.disabled = true;
+
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyFaHjAqwEcI6tKSkC0MzlmPiU0-T3voMNmvuDdFF5EdxbMS1F-bV30Mjy0aP837Y6k0w/exec';
+
+    const flattenedData = {
+        timestamp: formData.timestamp,
+        organization: formData.organization,
+        industry: formData.industry,
+        products: formData.products.join(', ')
+    };
+
+    selectedProducts.forEach(product => {
+        const productData = formData.feedback[product];
+        flattenedData[`${product}_ease_of_use`] = productData.easeOfUse;
+        flattenedData[`${product}_features`] = productData.features;
+        flattenedData[`${product}_reliability`] = productData.reliability;
+        flattenedData[`${product}_likes`] = productData.likes;
+        flattenedData[`${product}_improvements`] = productData.improvements;
+    });
+
+    const formDataToSend = new FormData();
+    Object.keys(flattenedData).forEach(key => {
+        formDataToSend.append(key, flattenedData[key]);
+    });
+
+    fetch(scriptURL, {
+        method: 'POST',
+        body: formDataToSend
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text();
+    })
+    .then(data => {
+        loadingOverlay.classList.remove('active');
+        formSteps.forEach(formStep => formStep.classList.remove('active'));
+        document.getElementById('thank-you').classList.add('active');
+    })
+    .catch(error => {
+        loadingOverlay.classList.remove('active');
+        submitBtn.disabled = false;
+        showError(`Error submitting feedback: ${error.message}`);
+    });
+}
+            
+            // Show confirmation modal
+            function showConfirmationModal(message, onProceed) {
+                const modal = document.getElementById('confirmation-modal');
+                const modalMessage = document.getElementById('modal-message');
+                const confirmBtn = document.getElementById('modal-confirm');
+                const proceedBtn = document.getElementById('modal-proceed');
+                
+                modalMessage.textContent = message;
+                modal.style.display = 'flex';
+                
+                confirmBtn.onclick = () => {
+                    modal.style.display = 'none';
+                    // Stay on current step
+                };
+                
+                proceedBtn.onclick = () => {
+                    modal.style.display = 'none';
+                    onProceed();
+                };
+                
+                modal.onclick = (e) => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                };
+            }
+
+            // Check form validity for Step 1
+            function checkFormValidity() {
+                const orgName = orgNameInput.value.trim();
+                const industry = industryInput.value.trim();
+                nextToProductsBtn.disabled = !(orgName && industry);
+            }
+
+            // Event listeners for input validation
+            orgNameInput.addEventListener('input', checkFormValidity);
+            industryInput.addEventListener('input', checkFormValidity);
+            
+            // Event listeners for navigation
+            nextToProductsBtn.addEventListener('click', () => {
+                goToStep(2);
+            });
+            
+            nextToRatingsBtn.addEventListener('click', () => {
+                generateRatingSections();
+                goToStep(3);
+            });
+            
+            nextToFeedbackBtn.addEventListener('click', () => {
+                if (!validateRatings()) {
+                    showConfirmationModal(
+                        "We noticed you haven't rated all aspects of the products. Your ratings help us improve our services. Would you like to provide them now?",
+                        () => {
+                            generateFeedbackSections();
+                            goToStep(4);
+                        }
+                    );
+                } else {
+                    generateFeedbackSections();
+                    goToStep(4);
+                }
+            });
+            
+            prevToOrgBtn.addEventListener('click', () => goToStep(1));
+            prevToProductsBtn.addEventListener('click', () => goToStep(2));
+            prevToRatingsBtn.addEventListener('click', () => goToStep(3));
+            
+            submitBtn.addEventListener('click', () => {
+                if (!validateFeedback()) {
+                    showConfirmationModal(
+                        "We noticed you haven't provided feedback for all products. Your detailed feedback is invaluable to us. Would you like to share your thoughts now?",
+                        () => {
+                            const formData = collectFormData();
+                            saveToGoogleSheets(formData);
+                        }
+                    );
+                } else {
+                    const formData = collectFormData();
+                    saveToGoogleSheets(formData);
+                }
+            });
+            
+            // Initialize
+            updateProgress();
+        });
+    </script>
+</body>
+</html>
