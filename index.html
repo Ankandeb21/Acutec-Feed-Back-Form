@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Product Feedback Survey</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Enhanced Product Feedback Survey (V1-Style Left Panel with Hover Updates)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -12,7 +12,7 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         body {
             background-image: url('faded_gallery-OfdOEdGYiuk-unsplash.jpg'); 
             background-size: 200%, 200%;
@@ -24,14 +24,15 @@
             padding: 20px;
             position: relative;
             animation: gradientBG 15s ease infinite;
+            touch-action: manipulation; /* Prevent double-tap zoom */
         }
-
+        
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
+        
         .container {
             width: 100%;
             max-width: 1100px;
@@ -45,7 +46,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
         }
-
+        
         .overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -65,6 +66,7 @@
             border-right: 1px solid rgba(255, 255, 255, 0.1);
             max-height: calc(100vh - 60px);
             overflow-y: auto;
+            scroll-behavior: smooth;
             scrollbar-width: thin;
             scrollbar-color: rgba(255, 255, 255, 0.4) rgba(24, 22, 22, 0.716);
         }
@@ -138,6 +140,112 @@
             margin-bottom: 0;
         }
 
+        /* Product List in Left Panel */
+        .product-list {
+            margin-top: 20px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 1;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .product-list.hidden {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        
+        .product-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .gradient-border {
+            animation: gradientBorder 3s linear infinite;
+        }
+        
+        @keyframes gradientBorder {
+            0% { border-color: #4facfe; }
+            50% { border-color: #00f2fe; }
+            100% { border-color: #4facfe; }
+        }
+        
+        .product-item h3 {
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        
+        .product-item p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        /* Product Description in Left Panel (on hover for desktop only) */
+        .product-description {
+            margin-top: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 1;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .product-description.hidden {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        
+        .product-description .product-item {
+            max-width: 280px;
+            max-height: calc(100% - 120px);
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        }
+        
+        .product-description .product-item::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .product-description .product-item::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .product-description .product-item::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+        
+        .product-description .product-item::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .product-description .product-item h3 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+        
+        .product-description .product-item p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
         /* Right Side Form Panel */
         .form-panel {
             width: 65%;
@@ -209,12 +317,14 @@
             color: white;
             box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4);
             transform: scale(1.1);
+            border-radius: 50%;
         }
         
         .step.completed .step-icon {
             background: linear-gradient(135deg, #4facfe, #00f2fe);
             border-color: transparent;
             color: white;
+            border-radius: 50%;
         }
         
         .step-label {
@@ -238,6 +348,10 @@
             max-height: calc(100vh - 200px);
             scrollbar-width: thin;
             scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+            transform: translateZ(0);
+            -webkit-overflow-scrolling: touch;
+            will-change: transform;
+            touch-action: pan-y; /* Allow vertical scrolling */
         }
 
         .form-container::-webkit-scrollbar {
@@ -263,9 +377,24 @@
             flex: 1;
         }
 
+        .form-step[data-step-type="product-selection"] {
+            overflow: visible !important;
+            display: flex;
+            flex-direction: column;
+            height: auto;
+        }
+        .form-step[data-step-type="product-selection"]::-webkit-scrollbar {
+            display: none;
+            width: 0;
+        }
+        
         .form-step.active {
             display: flex;
             flex-direction: column;
+        }
+
+        .form-step:not(.active) {
+            display: none !important;
         }
         
         @keyframes fadeIn {
@@ -361,9 +490,13 @@
             transition: all 0.3s ease;
             background: rgba(255, 255, 255, 0.05);
             position: relative;
+            z-index: 1;
+            transform: translateZ(0);
+            will-change: transform, box-shadow;
+            touch-action: none; /* Prevent scrolling on touch */
         }
         
-        .product-card:hover {
+        .product-card:hover, .product-card:active {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
@@ -444,9 +577,10 @@
             transition: all 0.2s;
             font-size: 1.4rem;
             text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            touch-action: manipulation; /* Prevent zoom on tap */
         }
         
-        .rating-stars i:hover {
+        .rating-stars i:hover, .rating-stars i:active {
             transform: scale(1.2);
         }
         
@@ -503,6 +637,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            touch-action: manipulation; /* Prevent zoom on tap */
         }
         
         .btn-prev {
@@ -511,7 +646,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        .btn-prev:hover {
+        .btn-prev:hover, .btn-prev:active {
             background: rgba(255, 255, 255, 0.15);
             transform: translateY(-3px);
         }
@@ -522,7 +657,7 @@
             box-shadow: 0 5px 15px rgba(0, 98, 126, 0.4);
         }
         
-        .btn-next:hover, .btn-submit:hover {
+        .btn-next:hover, .btn-next:active, .btn-submit:hover, .btn-submit:active {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(0, 98, 126, 0.6);
         }
@@ -703,6 +838,7 @@
             cursor: pointer;
             font-weight: 500;
             transition: all 0.3s;
+            touch-action: manipulation; /* Prevent zoom on tap */
         }
         
         #modal-confirm {
@@ -734,6 +870,10 @@
             
             .form-panel {
                 padding: 20px;
+            }
+            
+            .product-description .product-item {
+                max-height: calc(100% - 120px);
             }
             
             .product-item {
@@ -790,6 +930,20 @@
                 font-size: 0.85rem;
             }
             
+            .product-description .product-item h3 {
+                font-size: 1.1rem;
+            }
+            
+            .product-description .product-item p {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+            
+            .product-description .product-item {
+                padding: 15px;
+                max-height: calc(100% - 120px);
+            }
+            
             .feature-item {
                 gap: 8px;
                 margin-bottom: 12px;
@@ -809,16 +963,8 @@
         }
         
         @media (max-width: 600px) {
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-            
             .description-panel {
-                display: none; /* Hide left panel on phones */
-            }
-            
-            .container {
-                max-width: 100%;
+                display: none;
             }
             
             .form-panel {
@@ -826,8 +972,12 @@
                 padding: 15px;
             }
             
-            .product-card h3 {
-                font-size: 0.9rem;
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                max-width: 100%;
             }
             
             .form-container {
@@ -843,8 +993,8 @@
 <body>
     <div class="overlay"></div>
     <div class="container">
-        <!-- Left Panel: Description (Static) -->
-        <div class="description-panel">
+        <!-- Left Panel: Description -->
+        <div class="description-panel" id="description-panel">
             <img src="Acutec_new logo.png" class="logo" alt="">
             <h1>Product Feedback Survey</h1>
             <p>Your insights help us improve our products and services. Please take a few minutes to share your experience.</p>
@@ -943,9 +1093,9 @@
                 </div>
                 
                 <!-- Step 2: Product Selection -->
-                <div class="form-step" id="form-step-2">
+                <div class="form-step" id="form-step-2" data-step-type="product-selection">
                     <h2>Which products are you using?</h2>
-                    <p class="form-description">Select all that apply to your organization</p>
+                    <p class="form-description">Select all that apply to your organization.</p>
                     
                     <div class="products-grid">
                         <div class="product-card" data-product="rfms">
@@ -1100,6 +1250,7 @@
             const ratingSections = document.getElementById('rating-sections');
             const feedbackSections = document.getElementById('feedback-sections');
             const loadingOverlay = document.getElementById('loading-overlay');
+            const descriptionPanel = document.getElementById('description-panel');
             const orgNameInput = document.getElementById('org-name');
             const industryInput = document.getElementById('industry');
             
@@ -1109,7 +1260,265 @@
             let currentStep = 1;
             const selectedProducts = new Set();
             let ratingsData = {};
+            let currentHover = null;
+            let timeoutRef = null;
 
+            // Product data with descriptions
+            const productData = {
+                'rfms': {
+                    title: 'RFMS',
+                    brief: 'Streamline your financial transactions.',
+                    details: 'RFMS (Real-Time Financial Management System) offers seamless integration for real-time transaction processing, ensuring efficiency and accuracy in financial operations.'
+                },
+                'rfms-nach': {
+                    title: 'RFMS NACH',
+                    brief: 'Automate recurring payments.',
+                    details: 'RFMS NACH enables automated clearing house services, simplifying recurring payments and direct debits with high reliability and security.'
+                },
+                'signing-tool': {
+                    title: 'SIGNING TOOL',
+                    brief: 'Securely sign documents.',
+                    details: 'The Signing Tool provides a robust platform for digital signatures, ensuring secure and legally binding document signing processes.'
+                },
+                'vam': {
+                    title: 'VAM',
+                    brief: 'Manage virtual accounts.',
+                    details: 'VAM (Virtual Account Management) allows businesses to create and manage virtual accounts, streamlining payment collection and reconciliation.'
+                },
+                'support-services': {
+                    title: 'SUPPORT SERVICES',
+                    brief: 'Expert support for SFMS/CCIL/CIMS.',
+                    details: 'Our Support Services provide dedicated assistance for SFMS, CCIL, and CIMS, ensuring smooth operations and quick resolution of issues.'
+                },
+                'converter-tool': {
+                    title: 'CONVERTER TOOL',
+                    brief: 'Convert files effortlessly.',
+                    details: 'The Converter Tool offers flexible file conversion capabilities, supporting various formats to meet your business needs.'
+                }
+            };
+            
+            // Progress bar width update
+            function updateProgress() {
+                let progressWidth = ((currentStep - 1) / (steps.length - 1)) * 100;
+                if (currentStep === 2) {
+                    progressWidth = 36; // Force exact 36% for Step 2
+                }
+                progressBar.style.width = `${progressWidth}%`;
+                
+                steps.forEach((step, index) => {
+                    if (index < currentStep) {
+                        step.classList.add('completed');
+                        step.classList.remove('active');
+                    } else if (index === currentStep - 1) {
+                        step.classList.add('active');
+                        step.classList.remove('completed');
+                    } else {
+                        step.classList.remove('active', 'completed');
+                    }
+                });
+            }
+
+            // Generate product list HTML
+            function generateProductList() {
+                let productListHtml = '<div class="product-list" id="product-list">';
+                Object.keys(productData).forEach(product => {
+                    productListHtml += `
+                        <div class="product-item gradient-border" data-product="${product}">
+                            <h3>${productData[product].title}</h3>
+                            <p>${productData[product].brief}</p>
+                        </div>
+                    `;
+                });
+                productListHtml += '</div>';
+                return productListHtml;
+            }
+
+            // Show product description on hover (desktop only)
+            function showProductDescription(product) {
+                if (currentStep !== 2 || isMobile()) return;
+                currentHover = product;
+                clearTimeout(timeoutRef);
+
+                const productList = document.getElementById('product-list');
+                const productDescription = document.getElementById('product-description');
+
+                if (productDescription && currentHover === product) {
+                    productDescription.classList.remove('hidden');
+                    productDescription.querySelector('.product-item').innerHTML = `
+                        <h3>${productData[product].title}</h3>
+                        <p>${productData[product].details}</p>
+                    `;
+                    return;
+                }
+
+                if (productList) {
+                    productList.classList.add('hidden');
+                    timeoutRef = setTimeout(() => {
+                        if (currentHover === product) {
+                            productList.outerHTML = `
+                                <div class="product-description" id="product-description">
+                                    <div class="product-item gradient-border">
+                                        <h3>${productData[product].title}</h3>
+                                        <p>${productData[product].details}</p>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }, 300);
+                }
+            }
+
+            // Reset to product list (desktop only)
+            function resetProductDescription() {
+                if (currentStep !== 2 || isMobile()) return;
+                currentHover = null;
+                clearTimeout(timeoutRef);
+
+                const productDescription = document.getElementById('product-description');
+                if (productDescription) {
+                    productDescription.classList.add('hidden');
+                    timeoutRef = setTimeout(() => {
+                        if (!currentHover) {
+                            productDescription.outerHTML = generateProductList();
+                        }
+                    }, 300);
+                }
+            }
+
+            // Update left panel content
+            function updateLeftPanel() {
+                if (isMobile()) return; // Skip updating left panel on mobile
+                if (currentStep === 2) {
+                    descriptionPanel.innerHTML = `
+                        <img src="Acutec_new logo.png" class="logo" alt="">
+                        <h1>Explore Our Products</h1>
+                        <p>Hover over a product to learn more or select products on the right.</p>
+                        ${generateProductList()}
+                    `;
+                } else {
+                    descriptionPanel.innerHTML = `
+                        <img src="Acutec_new logo.png" class="logo" alt="">
+                        <h1>Product Feedback Survey</h1>
+                        <p>Your insights help us improve our products and services. Please take a few minutes to share your experience.</p>
+                        <div class="features">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="feature-text">
+                                    <h3>Secure & Confidential</h3>
+                                    <p>Your feedback is completely anonymous and secure.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="feature-text">
+                                    <h3>Quick & Easy</h3>
+                                    <p>Complete the survey in just a few minutes.</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <div class="feature-text">
+                                    <h3>Shape Our Future</h3>
+                                    <p>Your suggestions directly influence our development roadmap.</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Navigation functions
+            function goToStep(step) {
+                formSteps.forEach(formStep => formStep.classList.remove('active'));
+                document.getElementById(`form-step-${step}`).classList.add('active');
+                currentStep = step;
+                updateProgress();
+                updateLeftPanel();
+                
+                const formContainer = document.querySelector('.form-container');
+                formContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            
+            // Detect mobile device
+            function isMobile() {
+                return window.innerWidth <= 600;
+            }
+            
+            // Product selection and interaction events
+            productCards.forEach(card => {
+                let touchStartTime = 0;
+                let touchMoved = false;
+
+                card.addEventListener('click', function(e) {
+                    if (touchMoved) return;
+                    const product = this.getAttribute('data-product');
+                    
+                    if (selectedProducts.has(product)) {
+                        selectedProducts.delete(product);
+                        this.classList.remove('selected');
+                    } else {
+                        selectedProducts.add(product);
+                        this.classList.add('selected');
+                        this.style.animation = "none";
+                        setTimeout(() => {
+                            this.style.animation = "pulse 0.5s";
+                        }, 10);
+                    }
+                    
+                    nextToRatingsBtn.disabled = selectedProducts.size === 0;
+                });
+
+                // Desktop: hover events
+                card.addEventListener('mouseenter', function() {
+                    if (currentStep === 2 && !isMobile()) {
+                        const product = this.getAttribute('data-product');
+                        showProductDescription(product);
+                    }
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    if (currentStep === 2 && !isMobile()) {
+                        resetProductDescription();
+                    }
+                });
+
+                // Mobile: touch events
+                card.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    touchStartTime = Date.now();
+                    touchMoved = false;
+                });
+
+                card.addEventListener('touchmove', function() {
+                    touchMoved = true;
+                });
+
+                card.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    if (touchMoved) return;
+                    const product = this.getAttribute('data-product');
+
+                    if (selectedProducts.has(product)) {
+                        selectedProducts.delete(product);
+                        this.classList.remove('selected');
+                    } else {
+                        selectedProducts.add(product);
+                        this.classList.add('selected');
+                        this.style.animation = "none";
+                        setTimeout(() => {
+                            this.style.animation = "pulse 0.5s";
+                        }, 10);
+                    }
+                    nextToRatingsBtn.disabled = selectedProducts.size === 0;
+                });
+            });
+            
             // Product data
             const productTitles = {
                 'rfms': 'RFMS',
@@ -1128,60 +1537,6 @@
                 'support-services': 'headset',
                 'converter-tool': 'file-export'
             };
-            
-            // Progress bar width update
-            function updateProgress() {
-                let progressWidth = ((currentStep - 1) / (steps.length - 1)) * 100;
-                if (currentStep === 2) {
-                    progressWidth = 36;
-                }
-                progressBar.style.width = `${progressWidth}%`;
-                
-                steps.forEach((step, index) => {
-                    if (index < currentStep) {
-                        step.classList.add('completed');
-                        step.classList.remove('active');
-                    } else if (index === currentStep - 1) {
-                        step.classList.add('active');
-                        step.classList.remove('completed');
-                    } else {
-                        step.classList.remove('active', 'completed');
-                    }
-                });
-            }
-
-            // Navigation functions
-            function goToStep(step) {
-                formSteps.forEach(formStep => formStep.classList.remove('active'));
-                document.getElementById(`form-step-${step}`).classList.add('active');
-                currentStep = step;
-                updateProgress();
-                
-                const formContainer = document.querySelector('.form-container');
-                formContainer.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-            
-            // Product selection event listeners
-            productCards.forEach(card => {
-                // The 'click' event handles both mouse clicks and touch taps
-                card.addEventListener('click', function() {
-                    const product = this.getAttribute('data-product');
-                    
-                    if (selectedProducts.has(product)) {
-                        selectedProducts.delete(product);
-                        this.classList.remove('selected');
-                    } else {
-                        selectedProducts.add(product);
-                        this.classList.add('selected');
-                        this.style.animation = "none";
-                        setTimeout(() => {
-                            this.style.animation = "pulse 0.5s";
-                        }, 10);
-                    }
-                    
-                    nextToRatingsBtn.disabled = selectedProducts.size === 0;
-                });
-            });
             
             // Generate rating sections
             function generateRatingSections() {
@@ -1274,7 +1629,23 @@
                 const allStars = document.querySelectorAll('.rating-stars i');
                 
                 allStars.forEach(star => {
-                    star.addEventListener('click', function() {
+                    star.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const ratingType = this.parentElement.getAttribute('data-rating');
+                        const value = parseInt(this.getAttribute('data-value'));
+                        const stars = this.parentElement.querySelectorAll('i');
+                        
+                        stars.forEach(s => s.classList.remove('active'));
+                        for (let i = 0; i < value; i++) {
+                            stars[i].classList.add('active');
+                        }
+                        
+                        ratingsData[ratingType] = value;
+                        updateNextButtonState();
+                    });
+
+                    star.addEventListener('touchend', function(e) {
+                        e.preventDefault();
                         const ratingType = this.parentElement.getAttribute('data-rating');
                         const value = parseInt(this.getAttribute('data-value'));
                         const stars = this.parentElement.querySelectorAll('i');
